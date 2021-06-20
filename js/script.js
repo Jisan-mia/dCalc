@@ -1,6 +1,6 @@
 // select elements
 const inputElement = document.querySelector(".input");
-const outputOperationElement = document.getElementById(".operation .value");
+const outputOperationElement = document.querySelector(".operation .value");
 const outputResultElement = document.querySelector(".result .value");
 
 // calculator mode switcher
@@ -14,7 +14,7 @@ const FACTORIAL = "FACTORIAL(";
 const CUBE = "CUBE(";
 
 let data = {
-	operatin: [],
+	operation: [],
 	formula: [],
 };
 let ans = 0;
@@ -36,7 +36,7 @@ let calculator_buttons = [
 	{
 		name: "cube",
 		symbol: "x³",
-		formula: CUBE,
+		formula: POWER,
 		type: "math_function",
 	},
 
@@ -48,15 +48,15 @@ let calculator_buttons = [
 	},
 
 	{
-		name: "ln2",
-		symbol: "ln2",
-		formula: "Math.log",
+		name: "x-inverse",
+		symbol: "x⁻¹",
+		formula: POWER,
 		type: "math_function",
 	},
 	{
-		name: "ln10",
-		symbol: "ln10",
-		formula: "Math.log",
+		name: "quad",
+		symbol: "x⁴",
+		formula: POWER,
 		type: "math_function",
 	},
 
@@ -352,14 +352,87 @@ inputElement.addEventListener("click", (e) => {
 // the main calculator button
 function calculator(button) {
 	if (button.type == "operator") {
-		data.operatin.push(button.symbol);
+		data.operation.push(button.symbol);
 		data.formula.push(button.formula);
 	} else if (button.type == "number") {
-		data.operatin.push(button.symbol);
+		data.operation.push(button.symbol);
 		data.formula.push(button.formula);
+	} else if (button.type == "trigo_function") {
+		data.operation.push(button.symbol + "(");
+
+		data.formula.push(button.formula);
+	} else if (button.type == "math_function") {
+		let symbol, formula;
+		if (button.name == "factorial") {
+			symbol = "!";
+			formula = button.formula;
+
+			data.operation.push(symbol);
+			data.formula.push(formula);
+		} else if (button.name == "power") {
+			symbol = "^(";
+			formula = button.formula;
+
+			data.operation.push(symbol);
+			data.formula.push(formula);
+		} else if (button.name == "square") {
+			showPowerOnUi(data, button.formula, 2);
+			console.log(data);
+		} else if (button.name == "cube") {
+			showPowerOnUi(data, button.formula, 3);
+		} else if (button.name == "quad") {
+			showPowerOnUi(data, button.formula, 4);
+		} else if (button.name == "x-inverse") {
+			showPowerOnUi(data, button.formula, -1);
+		} else {
+			symbol = button.symbol + "(";
+			formula = button.formula + "(";
+
+			data.operation.push(symbol);
+			data.formula.push(formula);
+			console.log(button);
+		}
+	} else if (button.type == "key") {
+		if (button.name == "clear") {
+			data.operation = [];
+			data.formula = [];
+
+			updateOutputResult(0);
+		} else if (button.name == "delete") {
+			data.operation.pop();
+			data.formula.pop();
+		} else if (button.name == "rad") {
+			RADIAN = true;
+			angleToggler();
+		} else if (button.name == "deg") {
+			RADIAN = false;
+			angleToggler();
+		}
+	} else if (button.type == "calculate") {
+		let formulaStr = data.formula.join("");
+
+		// solve power and factorial calculation
+
+		let result;
+		try {
+			result = eval(formulaStr);
+		} catch (error) {
+			if (error instanceof SyntaxError) {
+				result = "Syntax Error!";
+				updateOutputResult(result);
+				return;
+			}
+		}
+
+		// save result for later use
+		ans = result;
+		data.operation = [result];
+		data.formula = [result];
+		updateOutputResult(result);
+		return;
 	}
 
-	updateOutputOperation(data.operatin.join());
+	updateOutputOperation(data.operation.join(""));
 }
 
 // update output opeartion on ui
@@ -370,4 +443,13 @@ function updateOutputOperation(operation) {
 // update output result on ui
 function updateOutputResult(result) {
 	outputResultElement.innerHTML = result;
+}
+
+// show power on ui
+function showPowerOnUi(data, formula, powerNum) {
+	data.operation.push("^(");
+	data.formula.push(formula);
+
+	data.operation.push(powerNum);
+	data.formula.push(powerNum);
 }
