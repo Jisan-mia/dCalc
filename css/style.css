@@ -208,6 +208,7 @@ body {
 	/* background: ; */
 	opacity: 0.6;
 	color: rgba(243, 128, 34, 0.829);
+	cursor: default;
 }
 .advance-keys button:disabled:hover {
 	font-size: 0.9rem;
