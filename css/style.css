@@ -112,8 +112,9 @@ body {
 .calc-switcher div:hover {
 	color: rgb(255, 17, 0);
 }
-.calc-switcher div.active {
+.calc-switcher div.active-calc {
 	color: rgb(255, 17, 0);
+	font-weight: 700;
 }
 
 .input {
@@ -202,3 +203,13 @@ body {
 	font-weight: 800;
 }
 /* #D05D66 */
+/* disable button */
+.advance-keys button:disabled {
+	/* background: ; */
+	opacity: 0.6;
+	color: rgba(243, 128, 34, 0.829);
+}
+.advance-keys button:disabled:hover {
+	font-size: 0.9rem;
+	font-weight: 600;
+}

@@ -4,8 +4,24 @@ const outputOperationElement = document.querySelector(".operation .value");
 const outputResultElement = document.querySelector(".result .value");
 
 // calculator mode switcher
+let SCIENTIFIC_MODE = true;
 const scientificMode = document.querySelector(".scientific");
 const normalMode = document.querySelector(".normal");
+
+scientificMode.classList.add("active-calc");
+scientificMode.addEventListener("click", () => {
+	SCIENTIFIC_MODE = true;
+	scientificMode.classList.add("active-calc");
+	normalMode.classList.remove("active-calc");
+	disableAdvaceKey();
+});
+
+normalMode.addEventListener("click", () => {
+	SCIENTIFIC_MODE = false;
+	scientificMode.classList.remove("active-calc");
+	normalMode.classList.add("active-calc");
+	disableAdvaceKey();
+});
 
 // variables and costants
 const OPERATIONS = ["+", "-", "*", "/"];
@@ -328,6 +344,20 @@ function createCalculatorBtns() {
 }
 createCalculatorBtns();
 
+// disable advance key for normal mode calculator
+function disableAdvaceKey() {
+	const advanceKey = document.querySelectorAll(".advance-keys");
+	advanceKey.forEach((key) => {
+		key.childNodes.forEach((btn) => {
+			if (!SCIENTIFIC_MODE) {
+				btn.disabled = true;
+			} else {
+				btn.disabled = false;
+			}
+		});
+	});
+}
+
 // RADIAN OR DEGREE
 let RADIAN = true;
 const radBtn = document.getElementById("rad");
@@ -430,7 +460,6 @@ function calculator(button) {
 				factorial.replacement
 			);
 		});
-		console.log(formulaStr);
 
 		let result;
 		try {
@@ -579,10 +608,13 @@ function trigo(callback, angle) {
 
 // inversion trigonometric
 function inv_trigo(callback, value) {
-	if (value < -1 || value > 1) {
-		alert("Please enter a number in the randge between -1 to 1 of acos");
-		return NaN;
+	if (callback.name != "atan") {
+		if (value < -1 || value > 1) {
+			alert("Please enter a number in the randge between -1 to 1 of acos");
+			return NaN;
+		}
 	}
+
 	let angle = callback(value);
 
 	if (!RADIAN) {
