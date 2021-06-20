@@ -53,7 +53,7 @@ body {
 
 	color: #f3ededb2;
 
-	font-size: 1.4em;
+	font-size: 1.3em;
 	font-weight: bold;
 
 	position: relative;
@@ -75,7 +75,7 @@ body {
 
 	color: #f1f1f1;
 
-	font-size: 2em;
+	font-size: 1.7em;
 	font-weight: bold;
 
 	overflow: hidden;
@@ -201,3 +201,4 @@ body {
 .advance-keys button:hover {
 	font-weight: 800;
 }
+/* #D05D66 */
