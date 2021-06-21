@@ -356,6 +356,10 @@ function disableAdvaceKey() {
 			}
 		});
 	});
+	data.formula = [];
+	data.operation = [];
+	updateOutputOperation(data.operation.join(""));
+	updateOutputResult(0);
 }
 
 // RADIAN OR DEGREE
