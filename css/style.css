@@ -28,7 +28,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
+	height: calc(100vh - 25px);
 }
 
 .calc-cotnainer {
@@ -214,6 +214,19 @@ body {
 .advance-keys button:disabled:hover {
 	font-size: 0.9rem;
 	font-weight: 600;
+}
+
+/* footer design */
+
+footer p {
+	font-size: 13.86px;
+	text-align: center;
+	color: gray;
+}
+
+footer p a {
+	text-decoration: none;
+	color: rgb(255, 65, 7);
 }
 
 @media (max-width: 400px) {
