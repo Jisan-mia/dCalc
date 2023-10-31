@@ -27,7 +27,6 @@ normalMode.addEventListener("click", () => {
 const OPERATIONS = ["+", "-", "*", "/"];
 const POWER = "POWER(";
 const FACTORIAL = "FACTORIAL(";
-const CUBE = "CUBE(";
 
 let data = {
 	operation: [],
@@ -317,7 +316,7 @@ function createCalculatorBtns() {
 	let addedBtns = 0;
 
 	calculator_buttons.forEach((button) => {
-		if (button.name == "ANS") {
+		if (button.name === "ANS") {
 			btnPerRow = 5;
 			addedBtns++;
 			const lastRow = document.querySelector(".row:last-child");
@@ -329,7 +328,7 @@ function createCalculatorBtns() {
 			});
 		}
 
-		if (addedBtns % btnPerRow == 0) {
+		if (addedBtns % btnPerRow === 0) {
 			inputElement.innerHTML += `<div class="row"></div>`;
 		}
 
@@ -342,6 +341,7 @@ function createCalculatorBtns() {
 		addedBtns++;
 	});
 }
+
 createCalculatorBtns();
 
 // disable advance key for normal mode calculator
@@ -349,11 +349,7 @@ function disableAdvaceKey() {
 	const advanceKey = document.querySelectorAll(".advance-keys");
 	advanceKey.forEach((key) => {
 		key.childNodes.forEach((btn) => {
-			if (!SCIENTIFIC_MODE) {
-				btn.disabled = true;
-			} else {
-				btn.disabled = false;
-			}
+			btn.disabled = !SCIENTIFIC_MODE;
 		});
 	});
 	data.formula = [];
@@ -379,43 +375,43 @@ inputElement.addEventListener("click", (e) => {
 	const targetBtn = e.target;
 
 	calculator_buttons.forEach((button) => {
-		if (button.name == targetBtn.id) calculator(button);
+		if (button.name === targetBtn.id) calculator(button);
 	});
 });
 
 // the main calculator button
 function calculator(button) {
-	if (button.type == "operator") {
+	if (button.type === "operator") {
 		data.operation.push(button.symbol);
 		data.formula.push(button.formula);
-	} else if (button.type == "number") {
+	} else if (button.type === "number") {
 		data.operation.push(button.symbol);
 		data.formula.push(button.formula);
-	} else if (button.type == "trigo_function") {
+	} else if (button.type === "trigo_function") {
 		data.operation.push(button.symbol + "(");
 
 		data.formula.push(button.formula);
-	} else if (button.type == "math_function") {
+	} else if (button.type === "math_function") {
 		let symbol, formula;
-		if (button.name == "factorial") {
+		if (button.name === "factorial") {
 			symbol = "!";
 			formula = button.formula;
 
 			data.operation.push(symbol);
 			data.formula.push(formula);
-		} else if (button.name == "power") {
+		} else if (button.name === "power") {
 			symbol = "^(";
 			formula = button.formula;
 
 			data.operation.push(symbol);
 			data.formula.push(formula);
-		} else if (button.name == "square") {
+		} else if (button.name === "square") {
 			showPowerOnUi(data, button.formula, 2);
-		} else if (button.name == "cube") {
+		} else if (button.name === "cube") {
 			showPowerOnUi(data, button.formula, 3);
-		} else if (button.name == "quad") {
+		} else if (button.name === "quad") {
 			showPowerOnUi(data, button.formula, 4);
-		} else if (button.name == "x-inverse") {
+		} else if (button.name === "x-inverse") {
 			showPowerOnUi(data, button.formula, -1);
 		} else {
 			symbol = button.symbol + "(";
@@ -424,23 +420,23 @@ function calculator(button) {
 			data.operation.push(symbol);
 			data.formula.push(formula);
 		}
-	} else if (button.type == "key") {
-		if (button.name == "clear") {
+	} else if (button.type === "key") {
+		if (button.name === "clear") {
 			data.operation = [];
 			data.formula = [];
 
 			updateOutputResult(0);
-		} else if (button.name == "delete") {
+		} else if (button.name === "delete") {
 			data.operation.pop();
 			data.formula.pop();
-		} else if (button.name == "rad") {
+		} else if (button.name === "rad") {
 			RADIAN = true;
 			angleToggler();
-		} else if (button.name == "deg") {
+		} else if (button.name === "deg") {
 			RADIAN = false;
 			angleToggler();
 		}
-	} else if (button.type == "calculate") {
+	} else if (button.type === "calculate") {
 		let formulaStr = data.formula.join("");
 
 		// solve power and factorial calculation
@@ -497,17 +493,17 @@ function powerBaseGetter(formula, powerIndexes) {
 		let parenthesisCount = 0;
 
 		while (previousIndex >= 0) {
-			if (formula[previousIndex] == "(") parenthesisCount--;
-			if (formula[previousIndex] == ")") parenthesisCount++;
+			if (formula[previousIndex] === "(") parenthesisCount--;
+			if (formula[previousIndex] === ")") parenthesisCount++;
 
 			let isOperator = false;
 			OPERATIONS.forEach((operator) => {
-				if (formula[previousIndex] == operator) isOperator = true;
+				if (formula[previousIndex] === operator) isOperator = true;
 			});
 
-			let isPower = formula[previousIndex] == POWER;
+			let isPower = formula[previousIndex] === POWER;
 
-			if ((isOperator && parenthesisCount == 0) || isPower) break;
+			if ((isOperator && parenthesisCount === 0) || isPower) break;
 
 			base.unshift(formula[previousIndex]);
 			previousIndex--;
@@ -527,7 +523,7 @@ function factorialNumGetter(formula, factorialIndexes) {
 		let nextIndex = factIndex + 1;
 		let nextInput = formula[nextIndex];
 
-		if (nextInput == FACTORIAL) {
+		if (nextInput === FACTORIAL) {
 			factSequence++;
 			return;
 		}
@@ -539,15 +535,15 @@ function factorialNumGetter(formula, factorialIndexes) {
 		let parenthesisCount = 0;
 
 		while (previousIndex >= 0) {
-			if (formula[previousIndex] == "(") parenthesisCount--;
-			if (formula[previousIndex] == ")") parenthesisCount++;
+			if (formula[previousIndex] === "(") parenthesisCount--;
+			if (formula[previousIndex] === ")") parenthesisCount++;
 
 			let isOperator = false;
 			OPERATIONS.forEach((operator) => {
-				if (formula[previousIndex] == operator) isOperator = true;
+				if (formula[previousIndex] === operator) isOperator = true;
 			});
 
-			if (isOperator && parenthesisCount == 0) break;
+			if (isOperator && parenthesisCount === 0) break;
 
 			number.unshift(formula[previousIndex]);
 			previousIndex--;
@@ -577,7 +573,7 @@ function factorialNumGetter(formula, factorialIndexes) {
 function search(formula, keyword) {
 	let searchResult = [];
 	formula.forEach((item, index) => {
-		if (item == keyword) searchResult.push(index);
+		if (item === keyword) searchResult.push(index);
 	});
 
 	return searchResult;
@@ -612,11 +608,10 @@ function trigo(callback, angle) {
 
 // inversion trigonometric
 function inv_trigo(callback, value) {
-	if (callback.name != "atan") {
-		if (value < -1 || value > 1) {
-			alert("Please enter a number in the randge between -1 to 1 of acos");
-			return NaN;
-		}
+	if (callback.name !== "atan"
+		&& (value < -1 || value > 1)) {
+		alert("Please enter a number in the randge between -1 to 1 of acos");
+		return NaN;
 	}
 
 	let angle = callback(value);
@@ -629,7 +624,7 @@ function inv_trigo(callback, value) {
 
 // factorial funciton
 function factorial(number) {
-	if (number % 1 != 0) return gamma(number + 1);
+	if (number % 1 !== 0) return gamma(number + 1);
 
 	if (number === 0 || number === 1) return 1;
 	let result = 1;
@@ -639,6 +634,7 @@ function factorial(number) {
 	}
 	return result;
 }
+
 // gamma function
 function gamma(n) {
 	// accurate to about 15 decimal places
