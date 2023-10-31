@@ -40,7 +40,7 @@ body {
 	height: calc(100vh - 25px);
 }
 
-.calc-cotnainer {
+.calc-container {
 	width: 350px;
 
 	height: auto;
@@ -239,7 +239,7 @@ footer p a {
 }
 
 @media (max-width: 400px) {
-	.calc-cotnainer {
+	.calc-container {
 		max-width: 300px;
 		min-width: 250px;
 
